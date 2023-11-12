@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onClick(View view) {
-        startActivity(new Intent(MainActivity.this,HomePage.class));
+
         TextInputEditText emailInput = findViewById(R.id.email);
         TextInputEditText passInput = findViewById(R.id.password);
 
