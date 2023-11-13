@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="@dimen/activity_padding"
-    tools:context=".MainActivity">
+    tools:context=".ui.home.HomeFragment">
 
     <ProgressBar
         android:id="@+id/progressBar"
@@ -118,12 +117,5 @@
         <!-- Add more TableRow elements for additional data rows as needed -->
 
     </TableLayout>
-
-
-
-
-
-
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

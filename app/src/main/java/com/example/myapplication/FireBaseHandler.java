@@ -32,7 +32,7 @@ public class FireBaseHandler {
                 if (task.isSuccessful()) {
 
                     Toast.makeText(context, "sign in successfully!", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(context.getApplicationContext(), MenuSecond.class);
+                    Intent intent = new Intent(context.getApplicationContext(), HomePage.class);
                     context.startActivity(intent);
 
 
