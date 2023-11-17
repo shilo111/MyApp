@@ -2,6 +2,7 @@ package com.example.myapplication.ui.home;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -13,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -26,6 +28,8 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.myapplication.HomePage;
 import com.example.myapplication.R;
 import com.example.myapplication.databinding.FragmentHomeBinding;
+
+import java.util.Set;
 
 public class HomeFragment extends Fragment implements SensorEventListener {
     private EditText editgoal;
@@ -44,6 +48,7 @@ public class HomeFragment extends Fragment implements SensorEventListener {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
+
         HomeViewModel homeViewModel =
                 new ViewModelProvider(this).get(HomeViewModel.class);
 
@@ -59,6 +64,8 @@ public class HomeFragment extends Fragment implements SensorEventListener {
         }
 
         return root;
+
+
     }
 
     @Override
@@ -84,15 +91,17 @@ public class HomeFragment extends Fragment implements SensorEventListener {
             registerStepCounterSensor();
         }
 
-//        // Set up listener for goal input
-//        goalEditText.setOnEditorActionListener((v, actionId, event) -> {
-//            if (actionId == EditorInfo.IME_ACTION_DONE) {
-//                // Update goal when the user finishes entering a new goal
-//                updateGoalFromEditText();
-//                return true;
-//            }
-//            return false;
-//        });
+
+
+//      Set up listener for goal input
+        goalEditText.setOnEditorActionListener((v, actionId, event) -> {
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                // Update goal when the user finishes entering a new goal
+                updateGoalFromEditText();
+                return true;
+           }
+         return false;
+        });
 
 
         // Check for permission to use the step counter sensor
@@ -101,6 +110,17 @@ public class HomeFragment extends Fragment implements SensorEventListener {
         } else {
             registerStepCounterSensor();
         }
+
+        Button button = (Button) view.findViewById(R.id.button2);
+        button.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                progress = 0;
+                stepCount = 0;
+                setStepCount(stepCount);
+                stepCountTextView.setText("Step Count: " + stepCount);
+                progressBar.setProgress(progress);
+            }
+        });
     }
     private void updateGoalFromEditText() {
         String goalString = goalEditText.getText().toString();
@@ -172,12 +192,5 @@ public class HomeFragment extends Fragment implements SensorEventListener {
     }
 
 
-    public void reset(View view) {
-        progress = 0;
-        stepCount = 0;
-        setStepCount(stepCount);
-        stepCountTextView.setText("Step Count: " + stepCount);
-        progressBar.setProgress(progress);
 
-    }
 }
