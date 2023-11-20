@@ -1,14 +1,17 @@
 package com.example.myapplication;
 
+import android.content.Intent;
 import android.hardware.SensorManager;
 import android.os.Bundle;
 
 import com.example.myapplication.databinding.ActivityHomePageBinding;
 import com.example.myapplication.ui.dashboard.DashboardFragment;
 import com.example.myapplication.ui.home.HomeFragment;
+import com.example.myapplication.ui.library.LibraryFragment;
 import com.example.myapplication.ui.status.status;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.ListFragment;
 import androidx.navigation.NavController;
@@ -27,6 +30,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.Gravity;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -61,6 +65,8 @@ public class HomePage extends AppCompatActivity {
 
     private void setupHomePage(Bundle savedInstanceState) {
 
+
+
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
         fab = findViewById(R.id.fab);
         drawerLayout = findViewById(R.id.drawer_layout);
@@ -90,7 +96,7 @@ public class HomePage extends AppCompatActivity {
             } else if (itemId == R.id.navigation_dashboard) {
                 replaceFragment(new DashboardFragment());
             } else if (itemId == R.id.navigation_library) {
-                replaceFragment(new ListFragment());
+                replaceFragment(new LibraryFragment());
             } else if (itemId == R.id.navigation_status) {
                 replaceFragment(new status());
             }
@@ -105,6 +111,12 @@ public class HomePage extends AppCompatActivity {
             }
         });
     }
+
+
+
+
+
+
     private  void replaceFragment(Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
