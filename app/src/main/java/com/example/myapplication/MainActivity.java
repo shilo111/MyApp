@@ -15,14 +15,16 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class MainActivity extends AppCompatActivity {
     private TextView signup;
-
-   private FireBaseHandler f = new FireBaseHandler(FirebaseAuth.getInstance(),this);
-
+    private FirebaseAuth auth;
+    private FireBaseHandler f;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         signup=findViewById(R.id.sign_up);
+
+        auth = FirebaseAuth.getInstance();
+        f = new FireBaseHandler(auth, this);
 
         signup.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -43,5 +45,16 @@ public class MainActivity extends AppCompatActivity {
 
         f.signIn(email, password);
     }
+
+   @Override
+    protected void onStart() {
+        super.onStart();
+        if (auth.getCurrentUser() != null) {
+            Intent intent = new Intent(MainActivity.this, HomePage.class);
+            startActivity(intent);
+            finish();
+        }
+    }
+
 
 }

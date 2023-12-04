@@ -1,8 +1,12 @@
 package com.example.myapplication;
 
 
+import static androidx.fragment.app.FragmentManager.TAG;
+
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -13,6 +17,11 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class FireBaseHandler {
 
@@ -74,4 +83,23 @@ public class FireBaseHandler {
     }
     public FirebaseAuth getAuth(){return auth;}
     public  void setAuth(FirebaseAuth auth){this.auth = auth;}
+
+    public Users getUserDetails(DatabaseReference myRef, Listener<Users> listener) {
+        final Users[] user = new Users[1];
+        myRef.child(auth.getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Users value = dataSnapshot.getValue(Users.class);
+                listener.onListen(value);
+            }
+
+            @SuppressLint("RestrictedApi")
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
+                Log.w(TAG, "Failed to read value.", error.toException());}
+        });
+
+        return user[0];
+    }
 }

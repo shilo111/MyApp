@@ -1,7 +1,9 @@
 package com.example.myapplication;
 
+import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
-import android.hardware.SensorManager;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 
 import com.example.myapplication.databinding.ActivityHomePageBinding;
@@ -11,15 +13,8 @@ import com.example.myapplication.ui.library.LibraryFragment;
 import com.example.myapplication.ui.status.status;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.ListFragment;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
 import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -28,9 +23,7 @@ import androidx.fragment.app.FragmentTransaction;
 import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.os.Bundle;
 import android.view.Gravity;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -38,18 +31,20 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 import androidx.appcompat.widget.Toolbar;
+import androidx.navigation.ui.AppBarConfiguration;
 
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 
-
 public class HomePage extends AppCompatActivity {
 
+    private static final int MY_CAMERA_REQUEST_CODE = 100;
     private ActivityHomePageBinding binding;
     FloatingActionButton fab;
     DrawerLayout drawerLayout;
     BottomNavigationView bottomNavigationView;
+    private AppBarConfiguration mAppBarConfiguration;
+    private static final int CAMERA_REQUEST = 1888;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,16 +52,11 @@ public class HomePage extends AppCompatActivity {
         setContentView(R.layout.activity_home_page);
         binding = ActivityHomePageBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
-
-
-        setupHomePage(savedInstanceState);
+//getRoot().getContext()
+        setupHomePage(savedInstanceState, binding.fab.getContext());
     }
 
-    private void setupHomePage(Bundle savedInstanceState) {
-
-
-
+    private void setupHomePage(Bundle savedInstanceState, Context context) {
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
         fab = findViewById(R.id.fab);
         drawerLayout = findViewById(R.id.drawer_layout);
@@ -107,15 +97,10 @@ public class HomePage extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showBottomDialog();
+                showBottomDialog(context);
             }
         });
     }
-
-
-
-
-
 
     private  void replaceFragment(Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
@@ -124,8 +109,7 @@ public class HomePage extends AppCompatActivity {
         fragmentTransaction.commit();
     }
 
-    private void showBottomDialog() {
-
+    private void showBottomDialog(Context context) {
         final Dialog dialog = new Dialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.bottomsheetlayout);
@@ -141,7 +125,12 @@ public class HomePage extends AppCompatActivity {
 
                 dialog.dismiss();
                 Toast.makeText(HomePage.this,"Upload a Video is clicked",Toast.LENGTH_SHORT).show();
+                if (checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                    requestPermissions(new String[]{Manifest.permission.CAMERA}, MY_CAMERA_REQUEST_CODE);
+                }
 
+                Intent  intent = new Intent("android.media.action.IMAGE_CAPTURE");
+                startActivity(intent);
             }
         });
 
@@ -183,5 +172,11 @@ public class HomePage extends AppCompatActivity {
 
 
     }
+
+
+
+
+
+
 
 }

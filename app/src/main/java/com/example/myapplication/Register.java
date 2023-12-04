@@ -25,7 +25,6 @@ public class Register extends AppCompatActivity {
             public void onClick(View view) {
                 startActivity(new Intent(Register.this,MainActivity.class));
                 finish();
-
             }
         });
     }

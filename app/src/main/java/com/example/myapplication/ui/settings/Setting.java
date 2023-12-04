@@ -14,12 +14,12 @@ import android.view.ViewGroup;
 
 import com.example.myapplication.R;
 
-public class setting extends Fragment {
+public class Setting extends Fragment {
 
     private SettingViewModel mViewModel;
 
-    public static setting newInstance() {
-        return new setting();
+    public static Setting newInstance() {
+        return new Setting();
     }
 
     @Override
